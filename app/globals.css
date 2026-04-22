@@ -30,3 +30,60 @@ textarea:focus {
 .fade-in {
   animation: fadeInUp 0.6s ease-out both;
 }
+
+@media print {
+  /* Force light background for readability */
+  body {
+    background: #fff !important;
+    color: #111 !important;
+  }
+
+  /* Hide interactive elements */
+  nav,
+  footer,
+  [data-no-print],
+  button {
+    display: none !important;
+  }
+
+  /* Remove backdrop blurs, fixed elements */
+  .fixed {
+    display: none !important;
+  }
+
+  /* Ensure report fills the page */
+  main {
+    padding: 0 !important;
+  }
+
+  /* Card borders visible on print */
+  .border {
+    border-color: #e5e7eb !important;
+  }
+
+  /* Text contrast */
+  .text-white {
+    color: #111 !important;
+  }
+  .text-white\/70,
+  .text-white\/75,
+  .text-white\/85 {
+    color: #333 !important;
+  }
+  .text-white\/50,
+  .text-white\/55,
+  .text-white\/45,
+  .text-white\/40 {
+    color: #666 !important;
+  }
+  .text-white\/30,
+  .text-white\/25,
+  .text-white\/20 {
+    color: #999 !important;
+  }
+
+  /* Page breaks */
+  .space-y-6 > * {
+    break-inside: avoid;
+  }
+}
