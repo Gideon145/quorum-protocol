@@ -5,71 +5,49 @@ const STEPS = [
     num: "01",
     title: "Describe your idea",
     desc: "Write one paragraph about what you're building, who it's for, and how it makes money. The more detail, the sharper the feedback.",
-    icon: "✏️",
   },
   {
     num: "02",
     title: "Simulate 20 users",
     desc: "The Quorum engine generates 20 realistic archetypes — across ages, incomes, and tech literacy — and stress-tests your idea with each one.",
-    icon: "👥",
   },
   {
     num: "03",
     title: "Make a data-backed decision",
     desc: "Get your PMF score, top objections, feature requests, and pay willingness. Then re-interview the quorum with follow-up questions.",
-    icon: "📊",
   },
-];
-
-const STATS = [
-  { value: "20", label: "Synthetic personas per run" },
-  { value: "<30s", label: "Time to full report" },
-  { value: "100", label: "Max PMF score" },
-  { value: "∞", label: "Follow-up questions" },
 ];
 
 const FEATURES = [
   {
     title: "PMF Score",
     desc: "A 0–100 product-market fit score computed from willingness to use, pay, and realistic adoption signals.",
-    icon: "⚡",
-    color: "blue",
   },
   {
     title: "20 Diverse Personas",
     desc: "Every run generates unique archetypes spanning different ages, incomes, backgrounds, and tech literacy levels.",
-    icon: "🧠",
-    color: "cyan",
   },
   {
     title: "Re-interview Mode",
     desc: "Ask the quorum follow-up questions. Get collective responses grounded in each persona's perspective.",
-    icon: "💬",
-    color: "indigo",
   },
   {
     title: "Actionable Insights",
     desc: "Top objections, killer features users want, and a specific pivot suggestion if your idea needs work.",
-    icon: "🎯",
-    color: "blue",
   },
   {
     title: "Verdict + Segment",
     desc: "A clear verdict (Strong Fit → Don't Build) and the best target segment to focus your go-to-market on.",
-    icon: "🏆",
-    color: "cyan",
   },
   {
     title: "Willingness to Pay",
     desc: "Know exactly what % of users would pay and what average price they'd accept before you write a line of code.",
-    icon: "💰",
-    color: "indigo",
   },
 ];
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-[#060b14] text-white overflow-x-hidden">
+    <div className="min-h-screen bg-[#060b14] text-white overflow-x-hidden fade-in">
       {/* Animated background */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl" />
@@ -83,7 +61,7 @@ export default function LandingPage() {
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center text-sm font-bold shadow-lg shadow-blue-500/30">
             Q
           </div>
-          <span className="font-bold text-white tracking-tight">Quorum Protocol</span>
+          <span className="font-bold text-white tracking-tight text-lg" style={{fontFamily: "var(--font-playfair)"}}>Quorum Protocol</span>
         </div>
         <div className="flex items-center gap-3">
           <span className="hidden md:block text-white/40 text-sm">Free · No login required</span>
@@ -139,21 +117,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Stats bar */}
-      <section className="relative px-6 py-8 border-y border-white/8 bg-white/[0.02]">
-        <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {STATS.map((s) => (
-            <div key={s.label}>
-              <p className="text-3xl font-extrabold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                {s.value}
-              </p>
-              <p className="text-white/40 text-xs mt-1">{s.label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* How it works */}
+      {/* How it works */
       <section id="how-it-works" className="relative px-6 py-24 max-w-5xl mx-auto">
         <div className="text-center mb-16">
           <p className="text-blue-400/70 text-xs uppercase tracking-widest mb-3">The Process</p>
@@ -173,7 +137,6 @@ export default function LandingPage() {
               {i < 2 && (
                 <div className="hidden md:block absolute top-1/2 -right-3 w-6 h-px bg-gradient-to-r from-blue-500/40 to-transparent z-10" />
               )}
-              <div className="text-3xl mb-4">{step.icon}</div>
               <p className="text-blue-400/60 font-bold text-xs tracking-widest mb-2">{step.num}</p>
               <h3 className="text-white font-semibold mb-2 group-hover:text-blue-300 transition-colors">{step.title}</h3>
               <p className="text-white/45 text-sm leading-relaxed">{step.desc}</p>
@@ -195,7 +158,6 @@ export default function LandingPage() {
               key={f.title}
               className="bg-white/[0.03] hover:bg-blue-500/5 border border-white/8 hover:border-blue-500/25 rounded-2xl p-5 transition-all duration-300 group"
             >
-              <div className="text-2xl mb-3">{f.icon}</div>
               <h3 className="text-white font-semibold mb-1.5 group-hover:text-blue-300 transition-colors">{f.title}</h3>
               <p className="text-white/40 text-sm leading-relaxed">{f.desc}</p>
             </div>
@@ -271,7 +233,7 @@ export default function LandingPage() {
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
               <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
             </svg>
-            Built by <strong className="text-white/70 font-bold group-hover:text-white">Gideon145</strong>
+            Built by <strong className="text-white font-bold text-base group-hover:text-blue-300 transition-colors" style={{fontFamily: "var(--font-playfair)"}}>Gideon145</strong>
           </a>
         </div>
       </footer>
