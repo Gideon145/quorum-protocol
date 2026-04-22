@@ -1,4 +1,4 @@
-import type { QuorumReport, ReinterviewResponse } from "./types";
+import type { QuorumReport, ReinterviewResponse, Persona, PersonaChatMessage } from "./types";
 import { GENERATE_SYSTEM_PROMPT, REINTERVIEW_SYSTEM_PROMPT } from "./prompts";
 
 const LOCUS_BASE =
@@ -120,6 +120,41 @@ export async function reinterviewPersonas(
   );
 
   return JSON.parse(stripFences(raw)) as ReinterviewResponse;
+}
+
+export async function chatWithPersona(
+  persona: Persona,
+  idea: string,
+  history: PersonaChatMessage[],
+  newMessage: string
+): Promise<string> {
+  const systemPrompt = `You are ${persona.name}, a ${persona.age}-year-old ${persona.occupation} earning ${persona.income}.
+
+Background: ${persona.background}
+Tech literacy: ${persona.techLiteracy}
+You ${persona.wouldUse ? "would use" : "would NOT use"} this product.
+You ${persona.wouldPay ? `would pay around ${persona.suggestedPrice}` : "would NOT pay for this"}.
+Your main objection: ${persona.mainObjection}
+The one feature that would win you over: ${persona.killerFeature}
+Your general sentiment: ${persona.sentiment}
+
+The product being discussed: ${idea}
+
+CRITICAL RULES:
+- Stay fully in character as ${persona.name} at all times. Never break character.
+- Respond in first person, conversationally, as this real human would.
+- Keep responses to 2-4 sentences — natural and direct, like a real user interview.
+- Your opinions are grounded in your background, income, and tech literacy.
+- Don't be a pushover — if you have objections, stand your ground unless genuinely convinced.
+- Do NOT mention you are an AI or a simulation.`;
+
+  const messages = [
+    { role: "system", content: systemPrompt },
+    ...history.map((m) => ({ role: m.role, content: m.content })),
+    { role: "user", content: newMessage },
+  ];
+
+  return await locusChat(messages, 300, 0.85);
 }
 
 // ─── Stub (when API key not configured) ──────────────────────────────────────

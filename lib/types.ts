@@ -38,3 +38,8 @@ export interface ChatMessage {
   content: string;
   relevantPersonas?: number[];
 }
+
+export interface PersonaChatMessage {
+  role: "user" | "assistant";
+  content: string;
+}
