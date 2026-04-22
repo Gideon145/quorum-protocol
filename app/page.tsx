@@ -117,7 +117,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* How it works */
+      {/* How it works */}
       <section id="how-it-works" className="relative px-6 py-24 max-w-5xl mx-auto">
         <div className="text-center mb-16">
           <p className="text-blue-400/70 text-xs uppercase tracking-widest mb-3">The Process</p>
