@@ -7,7 +7,6 @@ import ReinterviewChat from "./ReinterviewChat";
 import ShareButton from "./ShareButton";
 import CohortBreakdown from "./CohortBreakdown";
 import RefinePanel from "./RefinePanel";
-import PrintButton from "./PrintButton";
 
 export default function ReportView({ report }: { report: QuorumReport }) {
   const positive = report.personas.filter((p) => p.sentiment === "positive").length;
@@ -24,7 +23,6 @@ export default function ReportView({ report }: { report: QuorumReport }) {
             <VerdictBadge verdict={report.verdict} />
             <div className="flex gap-2 flex-wrap">
               <ShareButton report={report} />
-              <PrintButton />
             </div>
           </div>
           <p className="text-white/70 text-sm leading-relaxed">{report.summary}</p>

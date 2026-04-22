@@ -32,7 +32,7 @@ export default function PMFGauge({ score }: PMFGaugeProps) {
 
   return (
     <div className="flex flex-col items-center">
-      <svg viewBox="0 0 200 120" className="w-48 h-28">
+      <svg viewBox="0 0 200 130" className="w-48 h-32">
         {/* Background arc */}
         <path
           d="M 20 100 A 80 80 0 0 1 180 100"
@@ -66,7 +66,7 @@ export default function PMFGauge({ score }: PMFGaugeProps) {
         </text>
         <text
           x="100"
-          y="110"
+          y="112"
           textAnchor="middle"
           fill="rgba(255,255,255,0.4)"
           fontSize="11"
