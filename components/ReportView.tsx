@@ -19,7 +19,7 @@ export default function ReportView({ report }: { report: QuorumReport }) {
       <div className="bg-gradient-to-br from-blue-500/5 to-transparent border border-blue-500/15 rounded-2xl p-6 flex flex-col md:flex-row gap-6 items-center">
         <div className="flex flex-col items-center justify-center shrink-0">
           <span className="text-5xl font-extrabold text-white">{report.pmfScore}</span>
-          <span className="text-white/40 text-sm mt-1">/100 PMF Score</span>
+          <span className="text-white/40 text-sm mt-1">/<span className="font-extrabold text-white">100</span> PMF Score</span>
         </div>
         <div className="flex-1 space-y-3">
           <div className="flex items-start justify-between gap-3 flex-wrap">
