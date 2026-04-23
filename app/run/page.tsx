@@ -13,15 +13,17 @@ type State = "idle" | "loading" | "done" | "error";
 function RunPageInner() {
   const searchParams = useSearchParams();
   const prefillIdea = searchParams.get("idea") ?? "";
+  const prefillTier = (searchParams.get("tier") ?? "full") as Tier;
+  const paid = searchParams.get("paid") === "true";
 
   const [state, setState] = useState<State>("idle");
   const [report, setReport] = useState<QuorumReport | null>(null);
   const [errorMsg, setErrorMsg] = useState("");
   const [ideaValue, setIdeaValue] = useState(prefillIdea);
-  const [tierValue, setTierValue] = useState<Tier>("full");
+  const [tierValue, setTierValue] = useState<Tier>(prefillTier);
 
-  // Run quorum directly — no checkout gate
-  const handleSubmit = async (description: string, tier: Tier) => {
+  // Run generation directly (post-payment redirect or re-run from RefinePanel)
+  const runGeneration = async (description: string, tier: Tier) => {
     setIdeaValue(description);
     setTierValue(tier);
     setErrorMsg("");
@@ -44,6 +46,28 @@ function RunPageInner() {
     }
   };
 
+  // From IdeaForm — create checkout session then redirect to hosted Locus page
+  const handleSubmit = async (description: string, tier: Tier) => {
+    setIdeaValue(description);
+    setTierValue(tier);
+    setErrorMsg("");
+    setState("loading");
+
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ description, tier }),
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) throw new Error(data.error ?? "Failed to create checkout session");
+      window.location.href = data.checkoutUrl;
+    } catch (e) {
+      setErrorMsg(e instanceof Error ? e.message : "Something went wrong");
+      setState("error");
+    }
+  };
+
   const reset = () => {
     setState("idle");
     setReport(null);
@@ -51,10 +75,10 @@ function RunPageInner() {
     setIdeaValue("");
   };
 
-  // Auto-submit when arriving from "Re-run quorum with this idea"
+  // Auto-run after payment redirect (?paid=true) or from RefinePanel (?idea=...)
   useEffect(() => {
     if (prefillIdea) {
-      handleSubmit(prefillIdea, "full");
+      runGeneration(prefillIdea, paid ? prefillTier : "full");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

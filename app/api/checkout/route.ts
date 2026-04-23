@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({
         amount: config.amount,
         description: `${config.label} — Quorum Protocol`,
-        successUrl: `${APP_URL}/run`,
+        successUrl: `${APP_URL}/run?idea=${encodeURIComponent(description.trim())}&tier=${tier}&paid=true`,
         cancelUrl: `${APP_URL}/run`,
         metadata: {
           tier,
@@ -57,7 +57,10 @@ export async function POST(req: NextRequest) {
     const sessionId: string = data.data?.id ?? data.data?.sessionId;
     if (!sessionId) throw new Error("No session ID in Locus response");
 
-    return NextResponse.json({ sessionId });
+    return NextResponse.json({
+      sessionId,
+      checkoutUrl: `https://beta-checkout.paywithlocus.com/${sessionId}`,
+    });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Checkout session creation failed";
     console.error("[checkout]", msg);
