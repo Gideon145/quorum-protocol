@@ -1,6 +1,6 @@
 # Quorum Protocol
 
-**A 20-persona synthetic focus group that stress-tests your product idea before you build it.**
+**Real focus groups cost $5,000. We charge $0.25. And the AI panelists are meaner.**
 
 > *"Stop guessing. Run the quorum."*
 
@@ -13,13 +13,33 @@
 
 ## What Is Quorum Protocol?
 
-Quorum Protocol simulates a panel of **20 fully-realized synthetic users** who interview your product idea — each with distinct demographics, income brackets, tech literacy levels, and motivations. It runs a structured research protocol, surfaces objections, feature requests, and willingness-to-pay data, then scores your idea against a **Product-Market Fit formula**.
+Quorum Protocol is a **pay-per-validation research engine**. You pay a few cents in USDC, and 20 synthetic users tear your idea apart — each with distinct demographics, income, tech literacy, and motivations. You get a PMF score, ranked objections, willingness-to-pay data, and verbatim quotes from each persona.
 
-This is not a chatbot that says "great idea." The panel is designed to include skeptics. At least **6 of the 20 personas will push back on your idea** — because that's what real focus groups do.
+Then the mechanic gets interesting: **you can keep iterating**. The AI rewrites your pitch to address the top objections. You pay again. You run the quorum again. You watch the score move. Each cent you spend is a real on-chain transaction — the feedback loop is literally metered by micropayments.
+
+This is not a chatbot that says "great idea." At least **6 of the 20 personas are designed to push back** — because that's what real focus groups do.
 
 After the quorum, you can:
 - **Re-interview the panel** — ask any follow-up question and get answers citing specific persona perspectives
 - **Refine the idea** — let AI rewrite your pitch to address the top objections, then **re-run the full quorum** on the improved version
+
+---
+
+## The Loop
+
+This is what separates Quorum Protocol from a one-shot AI tool:
+
+```
+1. Pay $0.25 USDC  →  20 personas roast your idea  →  PMF Score: 41
+                              ↓
+2. AI rewrites your pitch addressing the top 3 objections
+                              ↓
+3. Pay $0.25 USDC  →  Same rigor, new framing  →  PMF Score: 63
+                              ↓
+4. Repeat until you hit 70+ or pivot
+```
+
+Every iteration is a real on-chain USDC payment. The score going up (or not) is proof that the feedback is grounded — not just flattery. You're not paying for content, you're paying for a signal.
 
 ---
 
@@ -143,9 +163,8 @@ Runs a quorum on a product idea. For Deep Dive tier, first calls Brave Search to
 
 **Request:**
 ```json
-{ "description": "Your product idea (up to 500 chars)", "tier": "full", "demo": false }
+{ "description": "Your product idea (up to 500 chars)", "tier": "full" }
 ```
-Set `demo: true` to skip the AI call and return a pre-canned stub report.
 
 **Response:**
 ```json
@@ -247,6 +266,12 @@ interface Persona {
   sentiment: "positive" | "neutral" | "negative";
 }
 ```
+
+---
+
+## Report Preview
+
+> A real quorum report on **"A fish farm that sells directly to restaurants using an app"** — scored 58/100 (Niche Viable). 14/20 personas said they'd use it. The top objection: *"I already have distributor relationships. Why would I switch to an app?"* The top feature request: *live inventory + same-day booking*. [Try it free →](https://svc-mo84e57ac8gebo8k.buildwithlocus.com/run)
 
 ---
 
