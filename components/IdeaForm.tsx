@@ -139,9 +139,9 @@ export default function IdeaForm({ onSubmit, onDemoSubmit, isLoading, defaultVal
         <div className="flex justify-center mt-3">
           <button
             type="button"
-            disabled={isLoading}
-            onClick={() => onDemoSubmit(value.trim().length >= 5 ? value.trim() : "A fish farm that sells directly to restaurants using an app", tier)}
-            className="text-white/35 hover:text-white/60 text-xs transition-colors underline underline-offset-2 disabled:opacity-40"
+            disabled={isLoading || value.trim().length < 5}
+            onClick={() => onDemoSubmit(value.trim(), tier)}
+            className="text-white/35 hover:text-white/60 text-xs transition-colors underline underline-offset-2 disabled:opacity-40 disabled:cursor-not-allowed disabled:no-underline"
           >
             or try a free demo →
           </button>
