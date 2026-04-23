@@ -303,9 +303,8 @@ This project was built and submitted for the **PayGentic Week 2 Hackathon** ([de
 |---|---|
 | Deployed on BuildWithLocus | ✅ Containerized service `svc_mo84e57ac8gebo8k` — no Dockerfile, no cloud console, no DevOps |
 | Uses Locus API | ✅ AI inference via `POST /wrapped/openai/chat`; Deep Dive uses `POST /wrapped/brave/search` for live market context |
-| Locus Checkout | ✅ 3-tier USDC pricing ($0.10/$0.25/$0.50) via `POST /checkout/sessions` + `<LocusCheckout>` popup component |
+| Locus Checkout | ✅ 3-tier USDC pricing ($0.10/$0.25/$0.50) via `POST /checkout/sessions` + hosted checkout page |
 | PayWithLocus account | ✅ Funded via PayWithLocus wallet; credits transferred to BuildWithLocus account |
-| Something cool and unique | ✅ Full synthetic PMF research engine — tiered pricing, 10/20 persona modes, live market context (Deep Dive), re-interview, refine & re-run |
 | Demo video | ✅ [https://youtu.be/nPXiCIZkvnw](https://youtu.be/nPXiCIZkvnw) |
 
 The entire deployment pipeline — build, infrastructure, routing, SSL — is handled by BuildWithLocus. The only commands needed to ship were `git push` and a single API call to trigger a deploy.
