@@ -7,7 +7,7 @@
 [![Live App](https://img.shields.io/badge/Live%20App-svc--mo84e57ac8gebo8k.buildwithlocus.com-cyan)](https://svc-mo84e57ac8gebo8k.buildwithlocus.com)
 [![Deployed on BuildWithLocus](https://img.shields.io/badge/Deployed%20on-BuildWithLocus-blue)](https://beta.buildwithlocus.com)
 [![Powered by Locus API](https://img.shields.io/badge/AI-Locus%20Wrapped%20OpenAI-purple)](https://beta.paywithlocus.com)
-[![Demo Video](https://img.shields.io/badge/Demo-YouTube-red)](https://youtu.be/nPXiCIZkvnw)
+[![Demo Video](https://img.shields.io/badge/Demo%20Video-YouTube-red?logo=youtube)](https://youtu.be/nPXiCIZkvnw)
 
 ---
 
@@ -145,6 +145,7 @@ Save and retrieve a report via a 10-character short ID (e.g. `/report/a3f8c92b10
 | App | https://svc-mo84e57ac8gebo8k.buildwithlocus.com |
 | Platform | BuildWithLocus |
 | AI Backend | Locus Wrapped OpenAI (`gpt-4o-mini`) |
+| Demo Video | https://youtu.be/nPXiCIZkvnw |
 
 ---
 
