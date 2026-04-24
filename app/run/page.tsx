@@ -8,7 +8,7 @@ import GenerationStepper from "@/components/GenerationStepper";
 import ReportView from "@/components/ReportView";
 import type { QuorumReport, Tier } from "@/lib/types";
 
-type State = "idle" | "loading" | "done" | "error";
+type State = "idle" | "redirecting" | "loading" | "done" | "error";
 
 const PENDING_KEY = "quorum_pending";
 
@@ -74,7 +74,8 @@ function RunPageInner() {
       if (!res.ok || data.error) throw new Error(data.error ?? "Failed to create checkout session");
       // Save pending run before leaving the page — Locus hosted page may not redirect back
       localStorage.setItem(PENDING_KEY, JSON.stringify({ idea: description, tier, ts: Date.now() }));
-      window.location.href = data.checkoutUrl;
+      setState("redirecting");
+      setTimeout(() => { window.location.href = data.checkoutUrl; }, 1500);
     } catch (e) {
       setErrorMsg(e instanceof Error ? e.message : "Something went wrong");
       setState("error");
@@ -170,6 +171,21 @@ function RunPageInner() {
               detail you give, the sharper the feedback.
             </p>
             <IdeaForm onSubmit={handleSubmit} onDemoSubmit={runGeneration} isLoading={false} defaultValue={prefillIdea} />
+          </div>
+        )}
+
+        {state === "redirecting" && (
+          <div className="flex flex-col items-center text-center max-w-md mx-auto py-16">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center mb-6 shadow-lg shadow-blue-500/30">
+              <svg className="w-6 h-6 text-white animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M17 9V7a5 5 0 00-10 0v2M5 9h14l1 11H4L5 9z" /></svg>
+            </div>
+            <h2 className="text-xl font-bold text-white mb-2">Taking you to payment…</h2>
+            <p className="text-white/45 text-sm mb-6 leading-relaxed max-w-xs">
+              After paying, <span className="text-white/70 font-medium">come back here</span> and your quorum will be waiting to run.
+            </p>
+            <div className="bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white/40 text-xs">
+              💡 Hit the back button after payment completes
+            </div>
           </div>
         )}
 
