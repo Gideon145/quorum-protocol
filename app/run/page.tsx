@@ -10,6 +10,14 @@ import type { QuorumReport, Tier } from "@/lib/types";
 
 type State = "idle" | "loading" | "done" | "error";
 
+const PENDING_KEY = "quorum_pending";
+
+interface PendingRun {
+  idea: string;
+  tier: Tier;
+  ts: number;
+}
+
 function RunPageInner() {
   const searchParams = useSearchParams();
   const prefillIdea = searchParams.get("idea") ?? "";
@@ -21,9 +29,12 @@ function RunPageInner() {
   const [errorMsg, setErrorMsg] = useState("");
   const [ideaValue, setIdeaValue] = useState(prefillIdea);
   const [tierValue, setTierValue] = useState<Tier>(prefillTier);
+  const [pendingRun, setPendingRun] = useState<PendingRun | null>(null);
 
   // Run generation directly (post-payment redirect or re-run from RefinePanel)
   const runGeneration = async (description: string, tier: Tier) => {
+    setPendingRun(null);
+    localStorage.removeItem(PENDING_KEY);
     setIdeaValue(description);
     setTierValue(tier);
     setErrorMsg("");
@@ -61,6 +72,8 @@ function RunPageInner() {
       });
       const data = await res.json();
       if (!res.ok || data.error) throw new Error(data.error ?? "Failed to create checkout session");
+      // Save pending run before leaving the page — Locus hosted page may not redirect back
+      localStorage.setItem(PENDING_KEY, JSON.stringify({ idea: description, tier, ts: Date.now() }));
       window.location.href = data.checkoutUrl;
     } catch (e) {
       setErrorMsg(e instanceof Error ? e.message : "Something went wrong");
@@ -73,12 +86,30 @@ function RunPageInner() {
     setReport(null);
     setErrorMsg("");
     setIdeaValue("");
+    setPendingRun(null);
+    localStorage.removeItem(PENDING_KEY);
   };
 
   // Auto-run after payment redirect (?paid=true) or from RefinePanel (?idea=...)
+  // Also check localStorage for a pending run (in case Locus didn’t redirect)
   useEffect(() => {
     if (prefillIdea) {
       runGeneration(prefillIdea, paid ? prefillTier : "full");
+      return;
+    }
+    try {
+      const raw = localStorage.getItem(PENDING_KEY);
+      if (raw) {
+        const p: PendingRun = JSON.parse(raw);
+        // Only show if paid within the last 30 minutes
+        if (Date.now() - p.ts < 30 * 60 * 1000) {
+          setPendingRun(p);
+        } else {
+          localStorage.removeItem(PENDING_KEY);
+        }
+      }
+    } catch {
+      localStorage.removeItem(PENDING_KEY);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -112,6 +143,21 @@ function RunPageInner() {
       <main className="px-4 py-12">
         {state === "idle" && (
           <div className="flex flex-col items-center text-center max-w-2xl mx-auto">
+            {/* Resume banner — shown when Locus didn't redirect back after payment */}
+            {pendingRun && (
+              <div className="w-full mb-6 bg-cyan-500/10 border border-cyan-500/30 rounded-2xl px-5 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="text-left">
+                  <p className="text-cyan-300 text-sm font-semibold mb-0.5">Payment received — ready to run</p>
+                  <p className="text-white/50 text-xs truncate max-w-xs">&ldquo;{pendingRun.idea.slice(0, 80)}{pendingRun.idea.length > 80 ? "…" : ""}&rdquo;</p>
+                </div>
+                <button
+                  onClick={() => runGeneration(pendingRun.idea, pendingRun.tier)}
+                  className="shrink-0 bg-cyan-500 hover:bg-cyan-400 text-[#060b14] font-bold text-sm px-5 py-2 rounded-xl transition-all duration-200 active:scale-95"
+                >
+                  Run my quorum →
+                </button>
+              </div>
+            )}
             <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 rounded-full px-4 py-1.5 text-blue-400 text-xs font-medium mb-6">
               <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
               Synthetic User Research
