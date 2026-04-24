@@ -72,7 +72,7 @@ export default function IdeaForm({ onSubmit, isLoading, defaultValue }: IdeaForm
               )}
               <span
                 className={[
-                  "font-semibold text-xs mb-0.5",
+                  "font-semibold text-xs mb-1",
                   isSelected
                     ? isDeepDive
                       ? "text-purple-300"
@@ -81,18 +81,6 @@ export default function IdeaForm({ onSubmit, isLoading, defaultValue }: IdeaForm
                 ].join(" ")}
               >
                 {cfg.label}
-              </span>
-              <span
-                className={[
-                  "font-bold text-sm mb-1",
-                  isSelected
-                    ? isDeepDive
-                      ? "text-purple-200"
-                      : "text-white"
-                    : "text-white/50",
-                ].join(" ")}
-              >
-                ${cfg.amount} USDC
               </span>
               <span className="text-white/35 text-[10px] leading-tight">{cfg.description}</span>
             </button>
@@ -117,7 +105,7 @@ export default function IdeaForm({ onSubmit, isLoading, defaultValue }: IdeaForm
 
       <div className="flex items-center justify-between mt-4">
         <p className="text-white/35 text-xs">
-          {TIERS[tier].personaCount} synthetic users · ${TIERS[tier].amount} USDC
+          {TIERS[tier].personaCount} synthetic users
         </p>
         <button
           type="submit"
